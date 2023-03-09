@@ -1,0 +1,113 @@
+basePath: /api/v1
+definitions:
+  main.upwdRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:1873
+info:
+  contact: {}
+  description: twirl
+  title: twirl
+  version: "3.0"
+paths:
+  /auth/check:
+    post:
+      consumes:
+      - application/json
+      description: check if the token is valid
+      parameters:
+      - description: Bearer <token>
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: login with this
+      parameters:
+      - description: username and password for login
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/main.upwdRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: login with this
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: register with this
+      parameters:
+      - description: a sponsor is needed for registering
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: username and password for register
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/main.upwdRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: register with this
+      tags:
+      - auth
+securityDefinitions:
+  ApiKeyAuth:
+    description: Use the token from /auth/login
+    in: Header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
